@@ -1,19 +1,18 @@
-const express = require('express')
+const express = require("express");
+const config = require("config");
+const app = express();
 
-const app = express()
-
-
-
+//middlewares
+app.use(express.json());
 
 //routes
-app.get('/',(req,res) => {
-    res.status(400).send('Url ot found')
-})
-
+app.get("/", (req, res) => {
+  res.send("Hello world");
+});
 
 //config
-const port = process.env.PORT || 3000
+const port = config.get("port");
 
-app.listen(3000,() => {
-    console.log("Listening port: ",port)
-})
+app.listen(port, () => {
+  console.log("Listening port: ", port);
+});
