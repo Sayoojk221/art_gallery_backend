@@ -1,19 +1,35 @@
-const express = require('express')
+const express = require("express");
+const config = require("config");
+const wagner = require('wagner-core')
+const app = express();
+const mongoose = require('mongoose')
 
-const app = express()
+//middle_wares
+const Authorization = require('./middleware/Authorization')
+
+require("./models/Art")
+
+require("./managers")(wagner)
+
+//routers
+const authRouter = require("./routes/api/Auth");
+const artRouter = require("./routes/api/Arts");
 
 
+app.use(express.json());
+app.use(Authorization)
 
 
-//routes
-app.get('/',(req,res) => {
-    res.status(400).send('Url ot found')
-})
+app.use("/api", authRouter);
+app.use("/api/art", artRouter);
 
+const port = config.get("port");
 
-//config
-const port = process.env.PORT || 3000
+mongoose.connect(config.get("database.mongodb.connection")).then(() => {
+  console.log("Database connected")
+  app.listen(port, () => {
+    console.log("Listening port: ", port);
+  });
+  
+}).catch(() => console.log("Database connection failed!"))
 
-app.listen(3000,() => {
-    console.log("Listening port: ",port)
-})
