@@ -1,11 +1,15 @@
 const { validationResult } = require("express-validator");
+const wagner = require("wagner-core")
 const controllers = {};
 
-controllers.login = (req, res) => {
+controllers.login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ error: errors.array()[0].msg });
   }
+
+  const user = await wagner.get("UserManager").createNewUser()
+
 
   res.send("Login page");
 };

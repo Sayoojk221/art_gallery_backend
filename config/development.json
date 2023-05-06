@@ -1,4 +1,9 @@
 {
   "name": "Art Gallery - development",
-  "port": 3008
+  "port": 3008,
+  "database": {
+    "mongodb": {
+      "connection": "mongodb://localhost:27017/art_gallery"
+    }
+  }
 }
