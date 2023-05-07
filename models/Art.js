@@ -3,6 +3,7 @@ const { Types, Schema, model } = require("mongoose");
 const schema = Schema({
   artImage: String,
   tags: [{ type: String }],
+  topics: [{ type: String }],
   author: { type: Types.ObjectId, ref: "Customer" },
   favorites: Number,
   comments: Number,
