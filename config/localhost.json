@@ -5,5 +5,13 @@
     "mongodb": {
       "connection": "mongodb://localhost:27017/art_gallery"
     }
-  }
+  },
+  "mail": {
+    "service": "gmail",
+    "auth": {
+      "user": "ksayooj22@gmail.com",
+      "password": "zpuzyjwthbqffbje"
+    }
+  },
+  "secretKey":"00a6fa25-df29-4701-9077-557932591766"
 }

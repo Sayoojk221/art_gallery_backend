@@ -5,12 +5,13 @@ const app = express();
 const mongoose = require('mongoose')
 
 //middle_wares
-const Authorization = require('./middleware/Authorization')
+const validateJWT = require('./middleware/validateJWT')
 const Error = require("./middleware/ErrorHandler")
 
 require("./models")(wagner)
-
 require("./managers")(wagner)
+require("./utils/mailer")(wagner)
+require("./utils/crypto")(wagner)
 
 //routers
 const authRouter = require("./routes/api/Auth");
@@ -18,10 +19,9 @@ const artRouter = require("./routes/api/Arts");
 
 
 app.use(express.json());
-app.use(Authorization)
 
 app.use("/api", authRouter);
-app.use("/api/art", artRouter);
+app.use("/api/art",validateJWT, artRouter);
 
 app.use(Error)
 
