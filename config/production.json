@@ -1,0 +1,17 @@
+{
+  "name": "Art Gallery - development",
+  "port": 3008,
+  "database": {
+    "mongodb": {
+      "connection": "mongodb://localhost:27017/art_gallery"
+    }
+  },
+  "mail": {
+    "service": "mail_provider",
+    "auth": {
+      "user": "email",
+      "password": "password"
+    }
+  },
+  "secretKey":"secret_key"
+}

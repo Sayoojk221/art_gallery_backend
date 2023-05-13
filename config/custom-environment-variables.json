@@ -1,5 +1,10 @@
 {
-    "mail":{
-        "password":""
+  "mail": {
+    "service": "mail_provider",
+    "auth": {
+      "user": "email",
+      "password": "password"
     }
+  },
+  "secretKey":"secret_key"
 }

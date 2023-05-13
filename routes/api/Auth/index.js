@@ -16,5 +16,6 @@ router.post(
 );
 router.post("/register", authController.register);
 router.post("/forgot_password", authController.forgotPassword);
+router.get("/verifyEmail/:secretToken", authController.verifyEmail);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const schema = Schema({
   lname: String,
   email: String,
   country: String,
-  isEmailVerified: Boolean,
+  isEmailVerified: {type:Boolean,default:false},
   socialMedia: [{ url: String, name: String }],
   created_at: { type: Date, default: Date.now },
 });

@@ -1,6 +1,6 @@
 module.exports = function (wagner) {
-  wagner.factory("UserManager", () => {
-    const UserManager = require("./UserManager");
-    return new UserManager(wagner);
+  wagner.factory("CustomerManager", () => {
+    const Manager = require("./CustomerManager");
+    return new Manager(wagner);
   });
 };
