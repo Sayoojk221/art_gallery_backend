@@ -27,6 +27,7 @@ app.use(Error)
 
 const port = config.get("port");
 
+
 mongoose.connect(config.get("database.mongodb.connection")).then(() => {
   console.log("Database connected")
   app.listen(port, () => {
