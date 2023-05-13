@@ -19,6 +19,22 @@ class BaseManager {
         .catch((error) => reject(error));
     });
   }
+
+  _deleteOne(query) {
+    return new Promise((resolve, reject) => {
+      this.Table.deleteOne(query)
+        .then((result) => resolve(result))
+        .catch((error) => reject(error));
+    });
+  }
+
+  _updateOne(query,value) {
+    return new Promise((resolve, reject) => {
+      this.Table.updateOne(query,value)
+        .then((result) => resolve(result))
+        .catch((error) => reject(error));
+    });
+  }
 }
 
 module.exports = BaseManager;

@@ -8,6 +8,9 @@ class Mailer {
     this.basePath = path.resolve("./resources/templates/");
     this.transporter = nodemailer.createTransport({
       service: config.get("mail.service"),
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: config.get("mail.auth.user"),
         pass: config.get("mail.auth.password"),

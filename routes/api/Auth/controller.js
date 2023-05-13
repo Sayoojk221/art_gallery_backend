@@ -1,7 +1,8 @@
 const { check } = require("express-validator");
 const wagner = require("wagner-core");
-const { status } = require("../../../helper/constants");
+const { status,messages } = require("../../../helper/constants");
 const runValidation = require("../../../middleware/RunValidation");
+const config = require("config");
 const controllers = {};
 
 controllers.login = [
@@ -26,17 +27,21 @@ controllers.register = [
 
       const hashCustomer = wagner.get("Crypto").encrypt(customer.email);
 
+      const fromEmail = config.get("mail.auth.user");
+      const toEmail = customer.email;
 
-      await wagner.get("Mailer").sendMail({
-        fromEmail: "ksayooj22@gmail.com",
-        toEmail: "sayoojk221@gmail.com",
+      const mailPayload = {
+        fromEmail,
+        toEmail,
         subject: "Verify email",
         templateName: "VerifyEmail",
         context: {
           code: hashCustomer,
           baseUrl: req.protocol + "://" + req.headers.host,
         },
-      });
+      };
+
+      await wagner.get("Mailer").sendMail(mailPayload);
 
       delete customer._id;
       delete customer.isEmailVerified;
@@ -53,8 +58,20 @@ controllers.forgotPassword = (req, res) => {
   res.send("Forgot password page");
 };
 
-controllers.verifyEmail = (req, res) => {
-  res.send("Verify email page: "+req.params.secretToken);
+controllers.verifyEmail = async (req, res, next) => {
+  try {
+    const validateKey = wagner.get("Crypto").decrypt(req.params.secretToken);
+    if (!validateKey)
+      return res
+        .status(status.badRequest)
+        .json({ error: messages.invalidToken });
+    const customer = await wagner
+      .get("CustomerManager")
+      .verifyCustomer(validateKey);
+    res.status(status.ok).json(customer);
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = controllers;

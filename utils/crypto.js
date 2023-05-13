@@ -7,12 +7,15 @@ class Crypto {
 
     encrypt(value) {
         const key = config.get("secretKey")
-        return CryptoJS.AES.encrypt(value, key).toString('base64');
+        const encoded = CryptoJS.AES.encrypt(value, key).toString()
+        return encoded.toString().replace('/','!');
     }
 
     decrypt(cipherText) {
         const key = config.get("secretKey")
-        return CryptoJS.AES.decrypt(cipherText, key).toString('base64');
+        const decode = cipherText.toString().replace("!","/")
+        const bytes = CryptoJS.AES.decrypt(decode, key)
+        return bytes.toString(CryptoJS.enc.Utf8);
     }
 
 

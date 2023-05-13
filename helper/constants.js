@@ -6,4 +6,9 @@ constant.status = {
     ok:200
 }
 
+constant.messages = {
+    invalidToken:"Token is not valid/expired",
+    invalidLogin:"Invalid login credentials/token"
+}
+
 module.exports = constant
