@@ -1,5 +1,3 @@
-
-
 const controllers = {}
 controllers.home = (req,res) => {
     res.send('Art Home')

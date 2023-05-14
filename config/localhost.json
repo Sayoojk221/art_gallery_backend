@@ -1,6 +1,7 @@
 {
   "name": "Art Gallery - development",
   "port": 3008,
+  "baseUrl":"http://localhost:3008",
   "database": {
     "mongodb": {
       "connection": "mongodb://localhost:27017/art_gallery"
@@ -13,5 +14,7 @@
       "password": "password"
     }
   },
-  "secretKey":"secret_key"
+  "secretKey":"secret_key",
+  "jwtPrivateKey":"jwt_private_key"
+
 }
