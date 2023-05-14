@@ -6,9 +6,11 @@ class Mailer {
   constructor(wagner) {
     this.wagner = wagner;
     this.basePath = path.resolve("./resources/templates/");
+    this.baseUrl = config.get("baseUrl");
+    this.fromEmail = config.get("mail.auth.user");
     this.transporter = nodemailer.createTransport({
       service: config.get("mail.service"),
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 465,
       secure: true,
       auth: {
@@ -30,12 +32,13 @@ class Mailer {
     this.transporter.use("compile", hbs(template));
 
     var mailOptions = {
-      from: options.fromEmail,
+      from: this.fromEmail,
       to: options.toEmail,
       subject: options.subject,
       template: options.templateName,
       context: {
         ...options.context,
+        baseUrl: this.baseUrl,
       },
     };
 

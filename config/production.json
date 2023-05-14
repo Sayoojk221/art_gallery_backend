@@ -13,5 +13,7 @@
       "password": "password"
     }
   },
-  "secretKey":"secret_key"
+  "secretKey":"secret_key",
+  "jwtPrivateKey":"jwt_private_key"
+
 }

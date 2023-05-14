@@ -5,5 +5,9 @@ module.exports = (error, req, res, next) => {
     return res.status(status.badRequest).json({ error: error.message });
   }
 
+  console.log('====================================');
+  console.log(error);
+  console.log('====================================');
+
   next();
 };

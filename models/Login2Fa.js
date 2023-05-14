@@ -4,7 +4,6 @@ const schema = Schema({
   customerId: { type: Types.ObjectId, ref: "Customer" },
   expire: Date,
   token: String,
-  status: String
 });
 
 module.exports = model("Login2Fa", schema);
