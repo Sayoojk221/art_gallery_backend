@@ -34,19 +34,14 @@ class CustomerManager extends BaseManager {
               return reject(new Error("Invalid login credentials."));
             const token = await this.wagner
               .get("Login2Fa")
-              .findOne({ customerId: customer.id });
+              .find({ customerId: customer.id, isTokenUsed: false });
 
-            if (token) {
-              const expired =
-                this.wagner.get("Utils").hourDiff(token.expire) <= 0;
-
-              if (!expired)
-                return reject(
-                  new Error(
-                    "Last created login link still active, please check your inbox."
-                  )
-                );
-            }
+            if (token.length)
+              return reject(
+                new Error(
+                  "Last created login link still active, please check your inbox."
+                )
+              );
 
             const newToken = await new this.wagner.get("Login2Fa")({
               customerId: customer.id,
@@ -90,11 +85,25 @@ class CustomerManager extends BaseManager {
         .then(async (details) => {
           try {
             if (!details) return reject(new Error(messages.invalidToken));
-            const expired = this.wagner.get("Utils").hourDiff(details.expire) <= 0;
+            const expired =
+              this.wagner.get("Utils").hourDiff(details.expire) <= 0;
+
             if (expired)
               return reject(
                 new Error("Login link has expired, please try to login again")
               );
+
+            if (details.isTokenUsed)
+              return reject(
+                new Error(
+                  "Link has used already. please try to create another one."
+                )
+              );
+
+            await this.wagner
+              .get("Login2Fa")
+              .updateOne({ token }, { isTokenUsed: true });
+
             const customer = await this._findOne({ _id: details.customerId });
 
             resolve(customer.toJSON());
