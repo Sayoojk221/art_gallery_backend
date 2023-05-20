@@ -2,15 +2,15 @@ const { Types, Schema, model } = require("mongoose");
 
 const schema = Schema({
   artImage: String,
+  name: String,
   tags: [{ type: String }],
   topics: [{ type: String }],
   author: { type: Types.ObjectId, ref: "Customer" },
-  favorites: Number,
-  comments: Number,
-  viewers: Number,
+  favorites: { type: Number, default: 0 },
+  comments: { type: Number, default: 0 },
+  viewers: { type: Number, default: 0 },
   published_date: { type: Date, default: Date.now },
   imageDetails: { size: String, ratio: String },
 });
 
-
-module.exports = model('Art', schema)
+module.exports = model("Art", schema);

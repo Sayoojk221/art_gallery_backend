@@ -3,4 +3,8 @@ module.exports = function (wagner) {
     const Manager = require("./CustomerManager");
     return new Manager(wagner);
   });
+  wagner.factory("ArtManager", () => {
+    const Manager = require("./ArtManager");
+    return new Manager(wagner);
+  });
 };
