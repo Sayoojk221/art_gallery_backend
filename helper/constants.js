@@ -9,7 +9,7 @@ constant.status = {
 };
 
 constant.messages = {
-  invalidToken: "Token is not valid/expired.",
+  invalidToken: "Invalid token.",
   unauthorized: "Authorization failed.",
   internalError: "Something went wrong internal server!",
 };
