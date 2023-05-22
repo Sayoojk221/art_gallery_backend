@@ -42,14 +42,15 @@ controllers.verifyLogin = async (req, res, next) => {
       .get("CustomerManager")
       .verifyLogin(req.params.token);
 
+    const token = jwt.sign(customer, config.get("jwtPrivateKey"), {
+      expiresIn: "3d",
+    });
+    
     delete customer._id;
     delete customer.isEmailVerified;
     delete customer.created_at;
     delete customer.__v;
 
-    const token = jwt.sign(customer, config.get("jwtPrivateKey"), {
-      expiresIn: "3d",
-    });
     res.status(status.ok).json({
       token,
       email: customer.email,

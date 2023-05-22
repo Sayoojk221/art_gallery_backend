@@ -77,7 +77,7 @@ controllers.addArt = [
 
         const art = await wagner.get("ArtManager").createArt(newArtDetails);
 
-        delete art._id
+        delete art._id;
 
         res.status(status.ok).json(art);
       } catch (error) {
@@ -87,5 +87,38 @@ controllers.addArt = [
     });
   },
 ];
+
+controllers.listOfArts = async (req, res, next) => {
+  try {
+    const pageSize = 10;
+    const pageNumber = parseInt(req.params.page) || 1;
+
+    const topics = await wagner
+      .get("ArtManager")
+      .paginateArts({ pageSize, pageNumber });
+
+    res.status(status.ok).json(topics);
+  } catch (error) {
+    next(error);
+  }
+};
+
+controllers.singleArt = async (req, res, next) => {
+  try {
+    
+    const art = await wagner
+      .get("ArtManager")
+      ._findOne({ name: req.query.name });
+    if (!art) {
+      return res
+        .status(status.badRequest)
+        .json({ error: "Invalid art details." });
+    }
+
+    res.status(status.ok).json(art);
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = controllers;
