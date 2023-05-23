@@ -42,12 +42,12 @@ class ArtManager extends BaseManager {
       const pageSize = options.pageSize;
       const skips = pageSize * (pageNumber - 1);
 
-      this.Table.find()
+      this.Table.find(options.query || {})
         .skip(skips)
         .limit(options.pageSize)
         .sort("-published_date")
         .select("name artImage comments favorites -_id")
-        .populate("author","fname lname -_id")
+        .populate("author", "fname lname -_id")
         .then((docs) => {
           const startIndex = (pageNumber - 1) * pageSize;
           const endIndex = startIndex + pageSize;
@@ -64,6 +64,18 @@ class ArtManager extends BaseManager {
           resolve({ listOfArts: [] });
         })
         .catch((err) => reject(err));
+    });
+  }
+
+  searchArt(options) {
+    return new Promise((resolve, reject) => {
+      this.paginateArts({
+        pageNumber: options.pageNumber,
+        pageSize: 10,
+        query: { $text: { $search: options.searchText } },
+      })
+        .then((result) => resolve(result))
+        .catch((error) => reject(error));
     });
   }
 }

@@ -13,5 +13,6 @@ const schema = new Schema({
   imageDetails: { size: String, ratio: String },
 });
 
+schema.index({ name: "text", tags: "text" });
 
 module.exports = model("Art", schema);

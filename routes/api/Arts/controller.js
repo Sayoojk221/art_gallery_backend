@@ -88,10 +88,10 @@ controllers.addArt = [
   },
 ];
 
-controllers.listOfArts = async (req, res, next) => {
+controllers.artHome = async (req, res, next) => {
   try {
     const pageSize = 10;
-    const pageNumber = parseInt(req.params.page) || 1;
+    const pageNumber = parseInt(req.body.page) || 1;
 
     const topics = await wagner
       .get("ArtManager")
@@ -105,7 +105,6 @@ controllers.listOfArts = async (req, res, next) => {
 
 controllers.singleArt = async (req, res, next) => {
   try {
-    
     const art = await wagner
       .get("ArtManager")
       ._findOne({ name: req.query.name });
@@ -120,5 +119,47 @@ controllers.singleArt = async (req, res, next) => {
     next(error);
   }
 };
+
+controllers.searchArts = [
+  check("query", "Search text is required").not().isEmpty(),
+  RunValidation,
+  async (req, res, next) => {
+    try {
+      const arts = await wagner.get("ArtManager").searchArt({
+        searchText: req.body.query,
+        pageNumber: req.body.page || 1,
+      });
+      res.status(status.ok).json(arts);
+    } catch (error) {
+      next(error);
+    }
+  },
+];
+
+controllers.artsByTopic = [
+  check("topic", "Topic name is required").not().isEmpty(),
+  RunValidation,
+  async (req, res, next) => {
+    try {
+      const topic = req.body.topic;
+      const page = req.body.page || 1;
+      const topicExists = await wagner
+        .get("ArtTopic")
+        .findOne({ topic: topic });
+      if (!topicExists) {
+        return res.status(status.badRequest).json({ error: "Invalid topic." });
+      }
+
+      const arts = await wagner.get("ArtManager").paginateArts({
+        pageSize: 10,
+        pageNumber: page,
+        query: { topics: topic },
+      });
+      res.status(status.ok).json(arts);
+    } catch (error) {
+      next(error);
+    }
+  },
+];
 
 module.exports = controllers;
