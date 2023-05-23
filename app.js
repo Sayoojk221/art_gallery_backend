@@ -14,11 +14,12 @@ require("./utils/crypto")(wagner);
 require("./utils/utils")(wagner);
 
 const apiRoutes = require("./routes/api");
-
+const commonRoutes = require("./routes/common")
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 
 app.use("/api", apiRoutes);
+app.use("/",commonRoutes)
 app.use(Error);
 
 const port = config.get("port");
